@@ -9,6 +9,7 @@ export const actions = {
 		const email = formData.get('email') as string;
 		const password = formData.get('password');
 		console.log('email', email);
+		console.log('password', password);
 
 		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
 			console.log('invalid password');
@@ -45,6 +46,6 @@ export const actions = {
 			...sessionCookie.attributes
 		});
 		console.log('redirecting');
-		redirect(302, '/dashboard');
+		redirect(302, '/protected/dashboard');
 	}
 };

@@ -42,6 +42,6 @@ export const actions = {
 			...sessionCookie.attributes
 		});
 		console.log('redirecting');
-		redirect(302, '/dashboard');
+		redirect(302, '/protected/dashboard');
 	}
 };
