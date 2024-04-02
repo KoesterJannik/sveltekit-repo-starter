@@ -16,8 +16,8 @@ export const lucia = new Lucia(adapter, {
 	},
 	getUserAttributes: (attributes) => {
 		return {
-			// attributes has the type of DatabaseUserAttributes
-			email: attributes.email
+			...attributes,
+			hashed_password: undefined
 		};
 	}
 });
@@ -31,4 +31,6 @@ declare module 'lucia' {
 
 interface DatabaseUserAttributes {
 	email: string;
+	id: string;
+	roles: string[];
 }

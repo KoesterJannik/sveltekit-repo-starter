@@ -20,7 +20,7 @@
 	import { siteData } from '../../../siteData';
 	import { page } from '$app/stores';
 	export let user: Omit<User, 'hashed_password'>;
-	console.log($page.url.pathname);
+	$: userRoles = user?.roles as string[];
 </script>
 
 <div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -39,13 +39,15 @@
 			<div class="flex-1">
 				<nav class="grid items-start px-2 text-sm font-medium lg:px-4">
 					{#each siteData?.dashboardLinks as link}
-						<a
-							href="##"
-							class={`flex items-center gap-3 rounded-lg px-3 py-2 ${$page.url.pathname == link.href ? 'text-primary' : 'text-muted-foreground '} transition-all hover:text-primary`}
-						>
-							<svelte:component this={link.icon} class="h-4 w-4" />
-							{link.name}
-						</a>
+						{#if userRoles.includes(link.needsRole)}
+							<a
+								href={link.href}
+								class={`flex items-center gap-3 rounded-lg px-3 py-2 ${$page.url.pathname == link.href ? 'text-primary' : 'text-muted-foreground '} transition-all hover:text-primary`}
+							>
+								<svelte:component this={link.icon} class="h-4 w-4" />
+								{link.name}
+							</a>
+						{/if}
 					{/each}
 				</nav>
 			</div>
@@ -75,19 +77,20 @@
 				</Sheet.Trigger>
 				<Sheet.Content side="left" class="flex flex-col">
 					<nav class="grid gap-2 text-lg font-medium">
-						<a href="##" class="flex items-center gap-2 text-lg font-semibold">
+						<a href="/protected/dashboard" class="flex items-center gap-2 text-lg font-semibold">
 							<Package2 class="h-6 w-6" />
 							<span class="sr-only">{siteData?.appShellTitle}</span>
 						</a>
-
 						{#each siteData?.dashboardLinks as link}
-							<a
-								href={link.href}
-								class={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${$page.url.pathname == link.href ? 'text-primary' : 'text-muted-foreground '} `}
-							>
-								<svelte:component this={link.icon} class="h-5 w-5" />
-								{link.name}
-							</a>
+							{#if userRoles.includes(link.needsRole)}
+								<a
+									href={link.href}
+									class={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${$page.url.pathname == link.href ? 'text-primary' : 'text-muted-foreground '} `}
+								>
+									<svelte:component this={link.icon} class="h-5 w-5" />
+									{link.name}
+								</a>
+							{/if}
 						{/each}
 					</nav>
 					<div class="mt-auto">

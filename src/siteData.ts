@@ -8,12 +8,20 @@ export const siteData = {
 		{
 			name: 'Dashboard',
 			icon: Home,
-			href: '/protected/dashboard'
+			href: '/protected/dashboard',
+			needsRole: 'USER'
 		},
 		{
 			name: 'Another Page',
 			icon: Package2,
-			href: '/protected/another-page'
+			href: '/protected/another-page',
+			needsRole: 'USER'
+		},
+		{
+			name: 'Admin only area',
+			icon: Package2,
+			href: '/protected/admin/overview',
+			needsRole: 'ADMIN'
 		}
 	]
 };
