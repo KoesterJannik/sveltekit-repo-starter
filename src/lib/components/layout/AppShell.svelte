@@ -19,6 +19,7 @@
 	import type { User } from '@prisma/client';
 	import { siteData } from '../../../siteData';
 	import { page } from '$app/stores';
+	import LightSwitch from './LightSwitch.svelte';
 	export let user: Omit<User, 'hashed_password'>;
 	$: userRoles = user?.roles as string[];
 </script>
@@ -31,10 +32,9 @@
 					<Package2 class="h-6 w-6" />
 					<span class="">{siteData?.appShellTitle}</span>
 				</a>
-				<Button variant="outline" size="icon" class="ml-auto hidden h-8 w-8">
-					<Bell class="h-4 w-4" />
-					<span class="sr-only">Toggle notifications</span>
-				</Button>
+				<div class="ml-auto">
+					<LightSwitch />
+				</div>
 			</div>
 			<div class="flex-1">
 				<nav class="grid items-start px-2 text-sm font-medium lg:px-4">
@@ -130,8 +130,10 @@
 				<DropdownMenu.Content align="end">
 					<DropdownMenu.Label>{user?.email}</DropdownMenu.Label>
 					<DropdownMenu.Separator />
-					<DropdownMenu.Item>Settings</DropdownMenu.Item>
-					<DropdownMenu.Item>Support</DropdownMenu.Item>
+					<a href="/protected/settings">
+						<DropdownMenu.Item>Settings</DropdownMenu.Item>
+					</a>
+
 					<DropdownMenu.Separator />
 					<DropdownMenu.Item>
 						<form method="post" action="/protected/logout">
