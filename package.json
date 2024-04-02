@@ -14,7 +14,6 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
-		"@prisma/client": "^5.11.0",
 		"test:unit": "vitest"
 	},
 	"devDependencies": {
@@ -45,6 +44,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@prisma/client": "^5.11.0",
 		"@internationalized/date": "^3.5.2",
 		"@lucia-auth/adapter-prisma": "^4.0.1",
 		"@sveltejs/adapter-node": "^5.0.1",
