@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	export let form;
 </script>
 
+<pre>
+	{JSON.stringify(form, null, 2)}
+</pre>
 <h1>Sign up</h1>
 <form method="post" use:enhance>
 	<label for="email">Email</label>
