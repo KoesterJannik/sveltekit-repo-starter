@@ -23,5 +23,38 @@ export const siteData = {
 			href: '/protected/admin/overview',
 			needsRole: 'ADMIN'
 		}
-	]
+	],
+	landingLinks: [
+		{
+			name: 'Home',
+			href: '/'
+		},
+		{
+			name: 'Login',
+			href: '/login'
+		},
+		{
+			name: 'Register',
+			href: '/register'
+		}
+	],
+	footerLinks: {
+		legal: [
+			{
+				name: 'Privacy Policy',
+				href: '/privacy-policy'
+			},
+			{
+				name: 'Terms of Service',
+				href: '/terms-of-service'
+			},
+			{
+				name: 'Data Protection',
+				href: '/data-protection'
+			}
+		]
+	},
+	copyRightFooter: {
+		text: '&copy; 2024, your company name'
+	}
 };
