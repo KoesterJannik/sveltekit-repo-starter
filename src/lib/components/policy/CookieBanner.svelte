@@ -1,5 +1,4 @@
 <script>
-	import * as Card from '$lib/components/ui/card/index';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index';
 	import { onMount } from 'svelte';
 	import Button from '../ui/button/button.svelte';

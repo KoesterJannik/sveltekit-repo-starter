@@ -5,7 +5,9 @@
 	import ExclamationTriangle from 'svelte-radix/ExclamationTriangle.svelte';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import { enhance } from '$app/forms';
+	import ResetPasswordForm from '../../lib/components/forms/ResetPasswordForm.svelte';
 	export let form;
+	let showResetForm = false;
 </script>
 
 <div class="min-h-screen">
@@ -19,7 +21,7 @@
 					</p>
 				</div>
 				<div class="grid gap-4">
-					<form method="post" use:enhance>
+					<form method="post" use:enhance action="?/login">
 						<div class="grid gap-2">
 							<Label for="email">Email</Label>
 							<Input name="email" type="email" placeholder="m@example.com" required />
@@ -27,17 +29,21 @@
 						<div class="grid gap-2">
 							<div class="flex items-center">
 								<Label for="password">Password</Label>
-								<a href="##" class="ml-auto inline-block text-sm underline">
+								<button
+									on:click={() => (showResetForm = true)}
+									type="button"
+									class="ml-auto inline-block text-sm underline"
+								>
 									Forgot your password?
-								</a>
+								</button>
 							</div>
 							<Input name="password" type="password" minlength={6} required placeholder="******" />
 						</div>
 						<Button type="submit" class="my-2 w-full">Login</Button>
 						{#if form?.message}
-							<Alert.Root variant="destructive">
+							<Alert.Root variant="default">
 								<ExclamationTriangle class="h-4 w-4" />
-								<Alert.Title>Error</Alert.Title>
+								<Alert.Title>Info</Alert.Title>
 								<Alert.Description>{form?.message}.</Alert.Description>
 							</Alert.Root>
 						{/if}
@@ -60,3 +66,5 @@
 		</div>
 	</div>
 </div>
+
+<ResetPasswordForm bind:showDialog={showResetForm} />

@@ -8,11 +8,8 @@ export const actions = {
 		const formData = await event.request.formData();
 		const email = formData.get('email') as string;
 		const password = formData.get('password');
-		console.log('email', email);
-		console.log('password', password);
 
 		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
-			console.log('invalid password');
 			return fail(400, {
 				message: 'Invalid password'
 			});
@@ -26,7 +23,6 @@ export const actions = {
 			}
 		});
 		if (doesUserExist) {
-			console.log('email already in use');
 			return fail(400, {
 				message: 'Email already in use'
 			});
@@ -45,7 +41,7 @@ export const actions = {
 			path: '.',
 			...sessionCookie.attributes
 		});
-		console.log('redirecting');
+
 		redirect(302, '/protected/dashboard');
 	}
 };

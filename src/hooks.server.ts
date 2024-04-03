@@ -37,7 +37,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			event.locals.session = session;
 			return resolve(event);
 		}
-		console.log('NOT AN ADMIN,redirecting');
+
 		return new Response(null, {
 			status: 300,
 			headers: { location: '/protected/dashboard' }

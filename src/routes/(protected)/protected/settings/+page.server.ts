@@ -15,7 +15,7 @@ export const actions = {
 				id: user!.id
 			}
 		});
-		console.log('userFromDb', userFromDb);
+
 		const oldPassword = formData.get('oldPassword') as string;
 		const newPassword = formData.get('newPassword') as string;
 		if (!oldPassword || !newPassword) {

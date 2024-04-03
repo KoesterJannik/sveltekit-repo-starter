@@ -1,17 +1,37 @@
 import { db, lucia } from '$lib/server/auth';
 import { fail, redirect } from '@sveltejs/kit';
+import { TimeSpan, createDate } from 'oslo';
 
+import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
+import mailer from '../../lib/server/aws-mailer.js';
 
+async function createPasswordResetToken(userId: string): Promise<string> {
+	// optionally invalidate all existing tokens
+	await db.passwordResetToken.deleteMany({
+		where: {
+			userId: userId
+		}
+	});
+	const tokenId = generateId(40);
+
+	await db.passwordResetToken.create({
+		data: {
+			token: tokenId,
+			userId: userId,
+			expiresAt: createDate(new TimeSpan(2, 'h'))
+		}
+	});
+
+	return tokenId;
+}
 export const actions = {
-	default: async (event) => {
+	login: async (event) => {
 		const formData = await event.request.formData();
 		const email = formData.get('email') as string;
 		const password = formData.get('password');
-		console.log('email', email);
 
 		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
-			console.log('invalid password');
 			return fail(400, {
 				message: 'Invalid password'
 			});
@@ -23,7 +43,6 @@ export const actions = {
 			}
 		});
 		if (!doesUserExist) {
-			console.log('email already in use');
 			return fail(400, {
 				message: 'Email already in use'
 			});
@@ -41,7 +60,35 @@ export const actions = {
 			path: '.',
 			...sessionCookie.attributes
 		});
-		console.log('redirecting');
+
 		redirect(302, '/protected/dashboard');
+	},
+	resetPassword: async (event) => {
+		const formData = await event.request.formData();
+		const email = formData.get('email') as string;
+		if (!email) {
+			return fail(400, {
+				message: 'Invalid email'
+			});
+		}
+		const doesUserExist = await db.user.findFirst({
+			where: {
+				email
+			}
+		});
+		if (!doesUserExist) {
+			return {
+				message: 'Please check your email for a reset link'
+			};
+		}
+		const token = await createPasswordResetToken(doesUserExist.id);
+		await mailer.sendEmail({
+			body: `Click here to reset your password: ${process.env.BASE_URL!}/reset-password/${token}`,
+			receiver: [email],
+			subject: 'Password reset'
+		});
+		return {
+			message: 'Please check your email for a reset link'
+		};
 	}
 };
