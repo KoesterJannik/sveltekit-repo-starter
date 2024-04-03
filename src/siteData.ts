@@ -31,11 +31,11 @@ export const siteData = {
 		},
 		{
 			name: 'Login',
-			href: '/login'
+			href: '/signin'
 		},
 		{
 			name: 'Register',
-			href: '/register'
+			href: '/signup'
 		}
 	],
 	footerLinks: {
