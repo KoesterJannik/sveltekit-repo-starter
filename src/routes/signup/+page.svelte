@@ -19,7 +19,7 @@
 					</p>
 				</div>
 				<div class="grid gap-4">
-					<form method="post" use:enhance>
+					<form method="post" use:enhance class="space-y-4">
 						<div class="grid gap-2">
 							<Label for="email">Email</Label>
 							<Input name="email" type="email" placeholder="m@example.com" required />
@@ -27,9 +27,6 @@
 						<div class="grid gap-2">
 							<div class="flex items-center">
 								<Label for="password">Password</Label>
-								<a href="##" class="ml-auto inline-block text-sm underline">
-									Forgot your password?
-								</a>
 							</div>
 							<Input name="password" type="password" minlength={6} required placeholder="******" />
 						</div>
