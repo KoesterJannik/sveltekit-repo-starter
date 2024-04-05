@@ -50,6 +50,7 @@ export const siteData = {
 			href: '/signup'
 		}
 	],
+	landingHeaderTitle: 'Starter Template',
 	landingHeaderIconUrl: '/favicon.png',
 	landingFooterIconUrl: '/favicon.png',
 	footerLinks: {
