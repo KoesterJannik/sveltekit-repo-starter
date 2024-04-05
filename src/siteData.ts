@@ -50,6 +50,8 @@ export const siteData = {
 			href: '/signup'
 		}
 	],
+	landingHeaderIconUrl: '/favicon.png',
+	landingFooterIconUrl: '/favicon.png',
 	footerLinks: {
 		legal: [
 			{

@@ -11,12 +11,8 @@
 			<nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
 				<div class="flex lg:flex-1">
 					<a href="/" class="-m-1.5 p-1.5">
-						<span class="sr-only">Your Company</span>
-						<img
-							class="h-8 w-auto"
-							src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-							alt=""
-						/>
+						<span class="sr-only">{siteData?.landingHeaderTitle}</span>
+						<img class="h-8 w-auto" src={siteData?.landingHeaderIconUrl} alt="" />
 					</a>
 				</div>
 
@@ -238,12 +234,8 @@
 	<footer class="" aria-labelledby="footer-heading">
 		<h2 id="footer-heading" class="sr-only">Footer</h2>
 		<div class="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
-			<div class="xl:grid xl:grid-cols-3 xl:gap-8">
-				<img
-					class="h-7"
-					src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-					alt="Company name"
-				/>
+			<div class="xl:grid xl:grid-cols-1 xl:gap-8">
+				<img class="h-7" src={siteData?.landingHeaderIconUrl} alt="Company name" />
 				<div class="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
 					<div class="md:grid md:grid-cols-2 md:gap-8">
 						<div class="hidden"></div>
