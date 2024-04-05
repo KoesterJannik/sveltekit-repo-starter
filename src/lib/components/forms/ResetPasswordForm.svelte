@@ -6,7 +6,9 @@
 	import Input from '../ui/input/input.svelte';
 	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
+	import { Loader2 } from 'lucide-svelte';
 	export let showDialog = false;
+	let loading = false;
 </script>
 
 <AlertDialog.Root bind:open={showDialog}>
@@ -14,13 +16,22 @@
 		<form
 			method="post"
 			use:enhance={({ formElement, formData, action, cancel, submitter }) => {
+				loading = true;
 				return async ({ result, update }) => {
-					// `result` is an `ActionResult` object
-					// @ts-ignore
-					toast.success(result?.data?.message);
-					showDialog = false;
-					// `update` is a function which triggers the default logic that would be triggered if this callback wasn't set
-					update();
+					try {
+						if (result.status === 200) {
+							// `result` is an `ActionResult` object
+							// @ts-ignore
+							toast.success(result?.data?.message);
+							showDialog = false;
+							// `update` is a function which triggers the default logic that would be triggered if this callback wasn't set
+						} else {
+							toast.error('An error occurred. Please try again later.');
+						}
+					} finally {
+						loading = false;
+						update();
+					}
 				};
 			}}
 			action="/signin?/resetPassword"
@@ -36,7 +47,13 @@
 				</div>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<Button type="submit" size="sm">Reset Password</Button>
+				<Button type="submit" size="sm">
+					{#if loading}
+						<Loader2 class="h-5 w-5 animate-spin" />
+					{:else}
+						Reset Password
+					{/if}
+				</Button>
 			</AlertDialog.Footer>
 		</form>
 	</AlertDialog.Content>
