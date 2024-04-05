@@ -21,6 +21,7 @@ export async function POST(event: RequestEvent) {
 	const req = event.request;
 	// let data;
 	let eventType: string;
+	let stripeInformation: any;
 	if (WEBHOOK_SECRET) {
 		// let event;
 
@@ -36,6 +37,7 @@ export async function POST(event: RequestEvent) {
 		try {
 			const event = stripe.webhooks.constructEvent(payload, signature!, WEBHOOK_SECRET);
 			const data = event.data;
+			stripeInformation = data.object;
 			console.log('data', data);
 			eventType = event.type;
 		} catch (err) {
@@ -49,24 +51,29 @@ export async function POST(event: RequestEvent) {
 		}
 	} else {
 		// data = req.body.data;
+		//@ts-ignore
 		eventType = (await req.formData()).get('type').toString();
 	}
-  // @ts-ignore
-  const paymentIntent = event.data.object as any;
+	// @ts-ignore
+	const paymentIntent = stripeInformation;
 
 	switch (eventType) {
 		case 'payment_intent.succeeded':
-    
-      await db.userPayment.create({
-        data: {
-          : paymentIntent.metadata.userId,
-          productId: paymentIntent.metadata.product_id,
-          amount: paymentIntent.amount,
-          paymentIntentId: paymentIntent.id,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      });
+			console.log('creating');
+			await db.boughtProduct.create({
+				data: {
+					userId: paymentIntent.metadata.userId,
+					productId: paymentIntent.metadata.product_id
+				}
+			});
+			await db.userPayment.create({
+				data: {
+					userId: paymentIntent.metadata.userId,
+					productId: paymentIntent.metadata.product_id,
+					amount: paymentIntent.amount,
+					transactionId: paymentIntent.id
+				}
+			});
 			// Payment is successful and the subscription is created.
 			// You should provision the subscription and save the customer ID to your database.
 			console.log('Event: checkout.session.completed');

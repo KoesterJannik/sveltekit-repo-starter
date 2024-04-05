@@ -1,15 +1,4 @@
-<<<<<<< HEAD
-# Sveltekit starter repo
-
-## Prerequisites
-1. You need to have an AWS Account to get your credentials
-2. In order to send emails, you need to connect your domain to ses and verify it
-3. After that go to AWS Credentials and provide your access key and secret key in the .env. Better create a custom user with only the necessary permissions
-
-## How to use
-=======
 # SvelteKit Starter Template with Lucia Auth
->>>>>>> 62443ed1efc2b309957e647870cc5a8be8fc428d
 
 This SvelteKit starter template streamlines your development process by providing pre-configured authentication with Lucia Auth, along with a foundation built on Tailwind CSS, Shadcn UI components, and SES for email functionality. Save time reinventing the wheel and focus on building your amazing SvelteKit application!
 
