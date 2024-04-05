@@ -7,6 +7,7 @@
 	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
 	import { Loader2 } from 'lucide-svelte';
+	import { Loader } from '../ui/loader';
 	export let showDialog = false;
 	let loading = false;
 </script>
@@ -14,6 +15,7 @@
 <AlertDialog.Root bind:open={showDialog}>
 	<AlertDialog.Content>
 		<form
+			class="space-y-4"
 			method="post"
 			use:enhance={({ formElement, formData, action, cancel, submitter }) => {
 				loading = true;
@@ -41,15 +43,16 @@
 				<AlertDialog.Description>
 					You will receive a link to reset your password. This one is valid for 2 hours.
 				</AlertDialog.Description>
-				<div class="grid gap-2">
-					<Label for="email">Email</Label>
-					<Input name="email" type="email" placeholder="youremail@example.com" required />
-				</div>
 			</AlertDialog.Header>
+			<div class=" grid gap-2">
+				<Label for="email">Email</Label>
+				<Input name="email" type="email" placeholder="youremail@example.com" required />
+			</div>
 			<AlertDialog.Footer>
+				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
 				<Button type="submit" size="sm">
 					{#if loading}
-						<Loader2 class="h-5 w-5 animate-spin" />
+						<Loader />
 					{:else}
 						Reset Password
 					{/if}
