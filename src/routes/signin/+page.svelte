@@ -5,7 +5,7 @@
 	import ExclamationTriangle from 'svelte-radix/ExclamationTriangle.svelte';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import { enhance } from '$app/forms';
-	import ResetPasswordForm from '../../lib/components/forms/ResetPasswordForm.svelte';
+	import ResetPasswordForm from '$lib/components/forms/ResetPasswordForm.svelte';
 	export let form;
 	let showResetForm = false;
 </script>
@@ -21,7 +21,7 @@
 					</p>
 				</div>
 				<div class="grid gap-4">
-					<form method="post" use:enhance action="?/login">
+					<form method="post" use:enhance action="?/login" class="space-y-4">
 						<div class="grid gap-2">
 							<Label for="email">Email</Label>
 							<Input name="email" type="email" placeholder="m@example.com" required />

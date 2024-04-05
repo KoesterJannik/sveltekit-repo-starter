@@ -4,7 +4,9 @@ import { dev } from '$app/environment';
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
 import { PrismaClient } from '@prisma/client';
 
-export const db = new PrismaClient();
+export const db = new PrismaClient({
+	datasourceUrl: process.env.DATABASE_URL
+});
 
 const adapter = new PrismaAdapter(db.session, db.user);
 

@@ -4,7 +4,7 @@ import { TimeSpan, createDate } from 'oslo';
 
 import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
-import mailer from '../../lib/server/aws-mailer.js';
+import mailer from '$lib/shared/modules/mailer';
 
 async function createPasswordResetToken(userId: string): Promise<string> {
 	// optionally invalidate all existing tokens
@@ -82,13 +82,20 @@ export const actions = {
 			};
 		}
 		const token = await createPasswordResetToken(doesUserExist.id);
-		await mailer.sendEmail({
-			body: `Click here to reset your password: ${process.env.BASE_URL!}/reset-password/${token}`,
-			receiver: [email],
-			subject: 'Password reset'
-		});
-		return {
-			message: 'Please check your email for a reset link'
-		};
+		try {
+			await mailer.sendEmail({
+				body: `Click here to reset your password: ${process.env.BASE_URL!}/reset-password/${token}`,
+				receiver: [email],
+				subject: 'Password reset'
+			});
+			return {
+				message: 'Please check your email for a reset link'
+			};
+		} catch (error) {
+			console.error(error);
+			return fail(500, {
+				message: 'Failed to send email'
+			});
+		}
 	}
 };

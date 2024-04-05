@@ -4,8 +4,8 @@ This SvelteKit starter template streamlines your development process by providin
 
 ### Features:
 
-- **Robust Authentication**: Secure user login, logout, and session 
-management with Lucia Auth.
+- **Robust Authentication**: Secure user login, logout, and session
+  management with Lucia Auth.
 
 - **Modern Styling**: Leverage the power and flexibility of Tailwind CSS for a beautiful and responsive user interface.
 
@@ -15,41 +15,44 @@ management with Lucia Auth.
 
 - **Planned Stripe Integration**: Stay tuned for seamless integration with Stripe for payment processing.
 
-
 ### Getting Started
 
 1. **Clone the Repository**:
-    
-    ```bash
-    git clone https://github.com/KoesterJannik/sveltekit-repo-starter.git
-    ```
+
+   ```bash
+   git clone https://github.com/KoesterJannik/sveltekit-repo-starter.git
+   ```
 
 2. **Install Dependencies**:
 
-    ```bash
-    cd sveltekit-repo-starter
-    npm install
-    ```
+   ```bash
+   cd sveltekit-repo-starter
+   npm install
+   ```
 
-4. **Configure Environment Variables**:
+3. **Configure Environment Variables**:
 
-    - Create a `.env` file in the root of the project.
-    - Copy the contents of `.env.example` into `.env`.
-    - Fill in the values for your environment variables.
+   - Create a `.env` file in the root of the project.
+   - Copy the contents of `.env.example` into `.env`.
+   - Fill in the values for your environment variables.
 
+4. **Start the Postgres Database**:
 
-3. **Start the Postgres Database**:
+   ```bash
+   docker-compose up -d
+   ```
 
-    ```bash
-    docker-compose up -d
-    ```
+5. **Run Migrations**:
 
-4. **Start the Development Server**:
+   ```bash
+   npx prisma migrate dev
+   ```
 
-    ```bash
-    npm run dev
-    ```
+6. **Start the Development Server**:
 
+   ```bash
+   npm run dev
+   ```
 
 ### Contributing
 
