@@ -12,6 +12,18 @@ export const siteData = {
 			needsRole: 'USER'
 		},
 		{
+			name: 'Store',
+			icon: Home,
+			href: '/protected/store',
+			needsRole: 'USER'
+		},
+		{
+			name: 'Your Products',
+			icon: Home,
+			href: '/protected/bought-products',
+			needsRole: 'USER'
+		},
+		{
 			name: 'Another Page',
 			icon: Package2,
 			href: '/protected/another-page',

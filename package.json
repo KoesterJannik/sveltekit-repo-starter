@@ -14,7 +14,8 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
-		"test:unit": "vitest"
+		"test:unit": "vitest",
+		"seedProducts": "cross-env DOTENV_CONFIG_PATH=.env tsx -r dotenv/config prisma/seed/products.ts"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
@@ -52,6 +53,7 @@
 		"bits-ui": "^0.21.1",
 		"clsx": "^2.1.0",
 		"cmdk-sv": "^0.0.17",
+		"cross-env": "^7.0.3",
 		"dotenv": "^16.4.5",
 		"embla-carousel-svelte": "^8.0.0",
 		"formsnap": "^1.0.0",
@@ -59,11 +61,13 @@
 		"mode-watcher": "^0.3.0",
 		"oslo": "^1.2.0",
 		"paneforge": "^0.0.2",
+		"stripe": "^14.23.0",
 		"svelte-radix": "^1.1.0",
 		"svelte-sonner": "^0.3.21",
 		"sveltekit-superforms": "^2.12.2",
 		"tailwind-merge": "^2.2.2",
 		"tailwind-variants": "^0.2.1",
+		"tsx": "^4.7.2",
 		"vaul-svelte": "^0.3.0",
 		"zod": "^3.22.4"
 	}

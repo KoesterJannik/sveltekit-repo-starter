@@ -17,6 +17,8 @@ model User {
   sessions           Session[]
   roles              Role[]               @default([USER])
   PasswordResetToken PasswordResetToken[]
+  createdAt          DateTime             @default(now())
+  boughtProducts     BoughtProduct[]
 }
 
 model Session {
@@ -32,6 +34,37 @@ model PasswordResetToken {
   token     String
   expiresAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model BoughtProduct {
+  id          String        @id @default(cuid())
+  userId      String
+  productId   String
+  user        User          @relation(fields: [userId], references: [id])
+  product     Product       @relation(fields: [productId], references: [id])
+  userPayment UserPayment[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model UserPayment {
+  id            String          @id @default(cuid())
+  amount        Float
+  provider      String          @default("STRIPE")
+  createdAt     DateTime        @default(now())
+  transactionId String          @unique
+  BoughtProduct BoughtProduct[]
+}
+
+model Product {
+  id String @id @default(cuid())
+
+  name          String          @unique
+  description   String
+  price         Float
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  BoughtProduct BoughtProduct[]
 }
 
 enum Role {

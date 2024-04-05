@@ -25,12 +25,6 @@
 							<Input name="email" type="email" placeholder="m@example.com" required />
 						</div>
 						<div class="grid gap-2">
-							<div class="flex items-center">
-								<Label for="password">Password</Label>
-								<a href="##" class="ml-auto inline-block text-sm underline">
-									Forgot your password?
-								</a>
-							</div>
 							<Input name="password" type="password" minlength={6} required placeholder="******" />
 						</div>
 						<Button type="submit" class="my-2 w-full">Register</Button>
