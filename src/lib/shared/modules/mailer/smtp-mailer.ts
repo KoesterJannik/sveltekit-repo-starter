@@ -34,7 +34,7 @@ export class SMTPEmailService implements IEmailService {
 			},
 			from: `"${senderInfo.name}" <${senderInfo.email}>`
 		};
-		console.log('SMTP config:', config);
+
 		this.transporter = createTransport(config);
 	}
 
