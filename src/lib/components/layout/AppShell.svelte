@@ -1,28 +1,30 @@
 <script lang="ts">
 	import CircleUser from 'lucide-svelte/icons/circle-user';
-	import LineChart from 'lucide-svelte/icons/line-chart';
-	import Package from 'lucide-svelte/icons/package';
-	import Home from 'lucide-svelte/icons/home';
-	import ShoppingCart from 'lucide-svelte/icons/shopping-cart';
-	import Bell from 'lucide-svelte/icons/bell';
 	import Menu from 'lucide-svelte/icons/menu';
 	import Package2 from 'lucide-svelte/icons/package-2';
 	import Search from 'lucide-svelte/icons/search';
-	import Users from 'lucide-svelte/icons/users';
 
-	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
-	import type { User } from '@prisma/client';
+
 	import { siteData } from '../../../siteData';
 	import { page } from '$app/stores';
 	import LightSwitch from './LightSwitch.svelte';
-	export let user: Omit<User, 'hashed_password'>;
-	$: userRoles = user?.roles as string[];
+	import { currentUser, setCurrentUser } from '../../stores/user';
+	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
+	import { toast } from 'svelte-sonner';
+	import { PageLoader } from '../ui/loader';
+
+	let loading = false;
 </script>
+
+{#if loading}
+	<PageLoader />
+{/if}
 
 <div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
 	<div class="hidden border-r bg-muted/40 md:block">
@@ -39,7 +41,7 @@
 			<div class="flex-1">
 				<nav class="grid items-start px-2 text-sm font-medium lg:px-4">
 					{#each siteData?.dashboardLinks as link}
-						{#if userRoles.includes(link.needsRole)}
+						{#if $currentUser?.roles.includes(link.needsRole)}
 							<a
 								href={link.href}
 								class={`flex items-center gap-3 rounded-lg px-3 py-2 ${$page.url.pathname == link.href ? 'text-primary' : 'text-muted-foreground '} transition-all hover:text-primary`}
@@ -70,7 +72,7 @@
 							<span class="sr-only">{siteData?.appShellTitle}</span>
 						</a>
 						{#each siteData?.dashboardLinks as link}
-							{#if userRoles.includes(link.needsRole)}
+							{#if $currentUser?.roles.includes(link.needsRole)}
 								<a
 									href={link.href}
 									class={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${$page.url.pathname == link.href ? 'text-primary' : 'text-muted-foreground '} `}
@@ -104,18 +106,37 @@
 					</Button>
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content align="end">
-					<DropdownMenu.Label>{user?.email}</DropdownMenu.Label>
+					<DropdownMenu.Label>{$currentUser?.email}</DropdownMenu.Label>
 					<DropdownMenu.Separator />
 					<a href="/protected/settings">
 						<DropdownMenu.Item>Settings</DropdownMenu.Item>
 					</a>
 
 					<DropdownMenu.Separator />
-					<DropdownMenu.Item>
-						<form method="post" action="/protected/logout">
-							<button type="submit"> Logout </button>
-						</form>
-					</DropdownMenu.Item>
+					<form
+						method="post"
+						action="/protected/logout"
+						use:enhance={() => {
+							return async ({ result, update }) => {
+								loading = true;
+								try {
+									if (result.status === 200) {
+										await setCurrentUser(null);
+										await goto('/');
+									} else {
+										toast.error('There was an error logging you out. Please try again later.');
+									}
+								} finally {
+									update();
+									loading = false;
+								}
+							};
+						}}
+					>
+						<DropdownMenu.Item>
+							<button type="submit" class="h-full w-full"> Logout </button>
+						</DropdownMenu.Item>
+					</form>
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
 		</header>

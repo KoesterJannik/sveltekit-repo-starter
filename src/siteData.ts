@@ -43,11 +43,18 @@ export const siteData = {
 		},
 		{
 			name: 'Login',
-			href: '/signin'
+			href: '/auth/signin',
+			onlyWhenLoggedOut: true
 		},
 		{
 			name: 'Register',
-			href: '/signup'
+			href: '/auth/signup',
+			onlyWhenLoggedOut: true
+		},
+		{
+			name: 'Dashboard',
+			href: '/protected/dashboard',
+			onlyWhenLoggedIn: true
 		}
 	],
 	landingHeaderTitle: 'Starter Template',

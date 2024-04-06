@@ -3,15 +3,41 @@
 	import CookieBanner from '../lib/components/policy/CookieBanner.svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { ModeWatcher } from 'mode-watcher';
-	import { navigating } from '$app/stores';
+	import { navigating, page } from '$app/stores';
 	import { PageLoader } from '$lib/components/ui/loader';
+	import { onMount } from 'svelte';
+	import { setCurrentUser } from '$lib/stores/user';
+	import { toast } from 'svelte-sonner';
+
+	export let data;
+
+	let url = $page.url;
+
+	$: {
+		url = $page.url;
+
+		let message = url.searchParams.get('message');
+
+		if (message) {
+			toast.info(message);
+		}
+	}
+
+	let loading = true;
+
+	onMount(() => {
+		setCurrentUser(data?.user || null);
+		loading = false;
+	});
 </script>
 
-{#if !!$navigating}
+{#if !!$navigating || loading}
 	<PageLoader />
 {/if}
 
 <ModeWatcher />
-<slot />
+{#if !loading}
+	<slot />
+{/if}
 <CookieBanner />
-<Toaster />
+<Toaster richColors />
