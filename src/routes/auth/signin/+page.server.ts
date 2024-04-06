@@ -1,10 +1,12 @@
 import { db, lucia } from '$lib/server/auth';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { TimeSpan, createDate } from 'oslo';
 
 import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
 import mailer from '$lib/shared/modules/mailer';
+import { signinSchema } from './schema.js';
+import { z } from 'zod';
 
 async function createPasswordResetToken(userId: string): Promise<string> {
 	// optionally invalidate all existing tokens
@@ -27,41 +29,67 @@ async function createPasswordResetToken(userId: string): Promise<string> {
 }
 export const actions = {
 	login: async (event) => {
+		// Delay the response by 1 second to simulate a slow network
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 		const formData = await event.request.formData();
 		const email = formData.get('email') as string;
 		const password = formData.get('password');
 
-		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
-			return fail(400, {
-				message: 'Invalid password'
-			});
-		}
+		const dataToValidate = {
+			...(email.length > 0 && { email }),
+			...(password && { password })
+		};
 
-		const doesUserExist = await db.user.findFirst({
-			where: {
-				email
+		try {
+			const validatedData = signinSchema.parse(dataToValidate);
+
+			const user = await db.user.findFirst({
+				where: {
+					email: validatedData.email
+				}
+			});
+
+			if (!user) {
+				return fail(401, {
+					message: 'Incorrect email or password'
+				});
 			}
-		});
-		if (!doesUserExist) {
-			return fail(400, {
-				message: 'Email already in use'
+
+			const validPassword = await new Argon2id().verify(
+				user.hashed_password,
+				validatedData.password
+			);
+
+			if (!validPassword) {
+				return fail(401, {
+					message: 'Incorrect email or password'
+				});
+			}
+
+			const session = await lucia.createSession(user.id, {});
+			const sessionCookie = lucia.createSessionCookie(session.id);
+			event.cookies.set(sessionCookie.name, sessionCookie.value, {
+				path: '.',
+				...sessionCookie.attributes
+			});
+
+			// redirect(302, '/protected/dashboard');
+			return {
+				user
+			};
+		} catch (error) {
+			if (error instanceof z.ZodError) {
+				const errors = error.flatten().fieldErrors;
+				return fail(400, {
+					errors
+				});
+			}
+
+			console.error(error);
+			return fail(500, {
+				message: 'Something went wrong'
 			});
 		}
-		const validPassword = await new Argon2id().verify(doesUserExist.hashed_password, password);
-		if (!validPassword) {
-			return fail(400, {
-				message: 'Incorrect username or password'
-			});
-		}
-
-		const session = await lucia.createSession(doesUserExist.id, {});
-		const sessionCookie = lucia.createSessionCookie(session.id);
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
-		});
-
-		redirect(302, '/protected/dashboard');
 	},
 	resetPassword: async (event) => {
 		const formData = await event.request.formData();

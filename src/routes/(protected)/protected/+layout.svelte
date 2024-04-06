@@ -1,8 +1,7 @@
 <script>
-	import AppShell from '../../../lib/components/layout/AppShell.svelte';
-	export let data;
+	import AppShell from '$lib/components/layout/AppShell.svelte';
 </script>
 
-<AppShell user={data?.user}>
+<AppShell>
 	<slot />
 </AppShell>

@@ -1,4 +1,5 @@
 <script>
+	import { currentUser } from '$lib/stores/user';
 	import LightSwitch from '../lib/components/layout/LightSwitch.svelte';
 	import Button from '../lib/components/ui/button/button.svelte';
 	import Input from '../lib/components/ui/input/input.svelte';
@@ -22,7 +23,19 @@
 
 				<div class="flex gap-x-12">
 					{#each siteData.landingLinks as link}
-						<a href={link.href} class="text-sm font-semibold leading-6 text-primary">{link.name}</a>
+						{#if link.onlyWhenLoggedIn && $currentUser}
+							<a href={link.href} class="text-sm font-semibold leading-6 text-primary"
+								>{link.name}</a
+							>
+						{:else if link.onlyWhenLoggedOut && !$currentUser}
+							<a href={link.href} class="text-sm font-semibold leading-6 text-primary"
+								>{link.name}</a
+							>
+						{:else if !link.onlyWhenLoggedIn && !link.onlyWhenLoggedOut}
+							<a href={link.href} class="text-sm font-semibold leading-6 text-primary"
+								>{link.name}</a
+							>
+						{/if}
 					{/each}
 				</div>
 				<div class="flex lg:flex-1 lg:justify-end">

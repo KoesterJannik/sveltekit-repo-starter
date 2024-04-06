@@ -1,5 +1,5 @@
 import { lucia } from '$lib/server/auth';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 
 export const actions = {
 	default: async (event) => {
@@ -12,6 +12,9 @@ export const actions = {
 			path: '.',
 			...sessionCookie.attributes
 		});
-		redirect(302, '/signin');
+
+		return {
+			user: null
+		};
 	}
 };

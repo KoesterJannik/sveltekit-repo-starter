@@ -1,5 +1,5 @@
-<script>
-	export let data;
+<script lang="ts">
+	import { currentUser } from '$lib/stores/user';
 </script>
 
-{JSON.stringify(data, null, 2)}
+<p>Hello <b>{$currentUser?.email}</b></p>
