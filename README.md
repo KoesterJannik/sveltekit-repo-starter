@@ -69,4 +69,4 @@ We welcome your contributions! Feel free to fork the repository, make changes, a
 
 ### Live Demo
 
-Check out a live demo of this template in action [here](https://sveltedemo.koesterjannik.com).
+Check out a live demo of this template in action [here](https://demo.koesterjannik.com).
