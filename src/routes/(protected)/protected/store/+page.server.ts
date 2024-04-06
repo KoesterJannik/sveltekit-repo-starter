@@ -36,7 +36,7 @@ export const actions = {
 
 		const BASE_URL = process.env.BASE_URL!;
 
-		const SUCCESS_REDIRECT = BASE_URL + '/protected/bought-products';
+		const SUCCESS_REDIRECT = BASE_URL + '/protected/payment/success';
 		const CANCEL_REDIRECT = BASE_URL + '/protected/payment/cancel';
 
 		const checkoutSite = await stripe.checkout.sessions.create({

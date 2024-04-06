@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"postinstall": "npx prisma generate",
-		"start": "npx prisma migrate deploy && node -r dotenv/config build",
+		"start": "npx prisma migrate deploy && npm run seedProducts && node -r dotenv/config build",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",

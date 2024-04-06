@@ -57,6 +57,9 @@ export const siteData = {
 			onlyWhenLoggedIn: true
 		}
 	],
+	landingHeaderTitle: 'Starter Template',
+	landingHeaderIconUrl: '/favicon.png',
+	landingFooterIconUrl: '/favicon.png',
 	footerLinks: {
 		legal: [
 			{

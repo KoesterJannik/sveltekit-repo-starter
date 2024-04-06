@@ -1,4 +1,4 @@
-import {
+/*import {
 	PRIVATE_SMTP_HOST,
 	PRIVATE_SMTP_PASS,
 	PRIVATE_SMTP_PORT,
@@ -46,3 +46,5 @@ export class SMTPEmailService implements IEmailService {
 		});
 	}
 }
+
+*/

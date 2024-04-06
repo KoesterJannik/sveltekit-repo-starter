@@ -55,19 +55,7 @@
 					{/each}
 				</nav>
 			</div>
-			<div class="mt-auto p-4">
-				<Card.Root>
-					<Card.Header class="p-2 pt-0 md:p-4">
-						<Card.Title>Upgrade to Pro</Card.Title>
-						<Card.Description>
-							Unlock all features and get unlimited access to our support team.
-						</Card.Description>
-					</Card.Header>
-					<Card.Content class="p-2 pt-0 md:p-4 md:pt-0">
-						<Button size="sm" class="w-full">Upgrade</Button>
-					</Card.Content>
-				</Card.Root>
-			</div>
+			<div class="mt-auto p-4"></div>
 		</div>
 	</div>
 	<div class="z-10 flex flex-col">
@@ -97,19 +85,7 @@
 							{/if}
 						{/each}
 					</nav>
-					<div class="mt-auto">
-						<Card.Root>
-							<Card.Header>
-								<Card.Title>Upgrade to Pro</Card.Title>
-								<Card.Description>
-									Unlock all features and get unlimited access to our support team.
-								</Card.Description>
-							</Card.Header>
-							<Card.Content>
-								<Button size="sm" class="w-full">Upgrade</Button>
-							</Card.Content>
-						</Card.Root>
-					</div>
+					<div class="mt-auto"></div>
 				</Sheet.Content>
 			</Sheet.Root>
 			<div class=" w-full flex-1">
