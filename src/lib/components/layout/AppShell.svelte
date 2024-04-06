@@ -19,8 +19,6 @@
 	import { toast } from 'svelte-sonner';
 	import { PageLoader } from '../ui/loader';
 
-	$: userRoles = $currentUser?.roles as string[];
-
 	let loading = false;
 </script>
 
@@ -74,7 +72,7 @@
 							<span class="sr-only">{siteData?.appShellTitle}</span>
 						</a>
 						{#each siteData?.dashboardLinks as link}
-							{#if userRoles.includes(link.needsRole)}
+							{#if $currentUser?.roles.includes(link.needsRole)}
 								<a
 									href={link.href}
 									class={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${$page.url.pathname == link.href ? 'text-primary' : 'text-muted-foreground '} `}
