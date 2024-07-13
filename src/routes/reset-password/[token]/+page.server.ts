@@ -2,12 +2,16 @@ import { redirect } from '@sveltejs/kit';
 import { db, lucia } from '../../../lib/server/auth';
 import type { PageServerLoad } from './$types';
 import { Argon2id } from 'oslo/password';
+import { ObjectId } from 'bson';
 export const load = (async ({ params }) => {
 	const token = await db.passwordResetToken.findFirst({
 		where: {
 			token: params.token
 		}
 	});
+	if (!token) {
+		redirect(303, '/signin');
+	}
 	const expirationDate = new Date(token!.expiresAt);
 	if (expirationDate < new Date()) {
 		redirect(303, '/signin');
@@ -47,7 +51,13 @@ export const actions = {
 				userId: user.id
 			}
 		});
-		const session = await lucia.createSession(user.id, {});
+		const session = await lucia.createSession(
+			user.id,
+			{},
+			{
+				sessionId: new ObjectId().toString()
+			}
+		);
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: '.',

@@ -1,5 +1,6 @@
 import { db, lucia } from '$lib/server/auth';
 import { fail, redirect } from '@sveltejs/kit';
+import { ObjectId } from 'bson';
 
 import { Argon2id } from 'oslo/password';
 
@@ -34,8 +35,16 @@ export const actions = {
 				hashed_password: hashedPassword
 			}
 		});
+		console.log(newUser);
 
-		const session = await lucia.createSession(newUser.id, {});
+		const session = await lucia.createSession(
+			newUser.id,
+			{},
+			{
+				sessionId: new ObjectId().toString()
+			}
+		);
+		console.log(session);
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: '.',

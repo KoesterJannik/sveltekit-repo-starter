@@ -1,7 +1,7 @@
 import { db, lucia } from '$lib/server/auth';
 import { fail, redirect } from '@sveltejs/kit';
 import { TimeSpan, createDate } from 'oslo';
-
+import { ObjectId } from 'bson';
 import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
 import mailer from '$lib/shared/modules/mailer';
@@ -54,7 +54,13 @@ export const actions = {
 			});
 		}
 
-		const session = await lucia.createSession(doesUserExist.id, {});
+		const session = await lucia.createSession(
+			doesUserExist.id,
+			{},
+			{
+				sessionId: new ObjectId().toString()
+			}
+		);
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: '.',

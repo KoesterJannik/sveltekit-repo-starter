@@ -6,12 +6,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id                 String               @id @default(cuid())
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
   email              String               @unique
   hashed_password    String
   sessions           Session[]
@@ -23,24 +23,24 @@ model User {
 }
 
 model Session {
-  id        String   @id
-  userId    String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
   expiresAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
 model PasswordResetToken {
-  id        String   @id @default(cuid())
-  userId    String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
   token     String
   expiresAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
 model BoughtProduct {
-  id        String  @id @default(cuid())
-  userId    String
-  productId String
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String  @db.ObjectId
+  productId String  @db.ObjectId
   user      User    @relation(fields: [userId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
 
@@ -49,19 +49,19 @@ model BoughtProduct {
 }
 
 model UserPayment {
-  id            String   @id @default(cuid())
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
   amount        Float
   provider      String   @default("STRIPE")
   createdAt     DateTime @default(now())
   transactionId String   @unique
   user          User     @relation(fields: [userId], references: [id])
-  userId        String
+  userId        String   @db.ObjectId
   product       Product  @relation(fields: [productId], references: [id])
-  productId     String
+  productId     String   @db.ObjectId
 }
 
 model Product {
-  id String @id @default(cuid())
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
   name          String          @unique
   description   String

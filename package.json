@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"postinstall": "npx prisma generate",
-		"start": "npx prisma migrate deploy && npm run seedProducts && node -r dotenv/config build",
+		"start": "npx prisma migrate db push && npm run seedProducts && node -r dotenv/config build",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -52,6 +52,7 @@
 		"@sveltejs/adapter-node": "^5.0.1",
 		"@types/nodemailer": "^6.4.14",
 		"bits-ui": "^0.21.1",
+		"bson": "^6.8.0",
 		"clsx": "^2.1.0",
 		"cmdk-sv": "^0.0.17",
 		"cross-env": "^7.0.3",
