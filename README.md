@@ -1,4 +1,10 @@
+
+
 # SvelteKit Starter Template with Lucia Auth
+
+Feel free to join our discord for some discussions and help!
+[Join our Discord Server](https://discord.gg/CW6b3hYxs3)
+
 
 This SvelteKit starter template streamlines your development process by providing pre-configured authentication with Lucia Auth, along with a foundation built on Tailwind CSS, Shadcn UI components, and SES for email functionality. Save time reinventing the wheel and focus on building your amazing SvelteKit application!
 
