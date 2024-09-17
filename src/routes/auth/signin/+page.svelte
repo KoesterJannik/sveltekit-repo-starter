@@ -6,8 +6,15 @@
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import { enhance } from '$app/forms';
 	import ResetPasswordForm from '$lib/components/forms/ResetPasswordForm.svelte';
+	import { toast } from 'svelte-sonner';
+	import { setCurrentUser } from '$lib/stores/user';
+	import { goto } from '$app/navigation';
+	import Loader from '$lib/components/ui/loader/loader.svelte';
+	import { page } from '$app/stores';
 	export let form;
 	let showResetForm = false;
+	let loading = false;
+	let errors: any = {};
 </script>
 
 <div class="min-h-screen">
@@ -21,10 +28,40 @@
 					</p>
 				</div>
 				<div class="grid gap-4">
-					<form method="post" use:enhance action="?/login" class="space-y-4">
+					<form
+						method="post"
+						use:enhance={() => {
+							errors = {};
+							loading = true;
+
+							return async ({ result, update }) => {
+								try {
+									if (result.status === 200) {
+										// @ts-ignore
+										setCurrentUser(result?.data?.user);
+
+										const next = $page.url.searchParams.get('next') || '/protected/dashboard';
+
+										goto(next);
+									} else if (result.status === 400) {
+										// @ts-ignore
+										errors = result?.data.errors;
+									}
+								} finally {
+									update();
+									loading = false;
+								}
+							};
+						}}
+						action="?/login"
+						class="space-y-4"
+					>
 						<div class="grid gap-2">
 							<Label for="email">Email</Label>
-							<Input name="email" type="email" placeholder="m@example.com" required />
+							<Input name="email" type="email" placeholder="m@example.com" />
+							{#if errors.email}
+								<p class="form-error">{errors.email}</p>
+							{/if}
 						</div>
 						<div class="grid gap-2">
 							<div class="flex items-center">
@@ -37,13 +74,22 @@
 									Forgot your password?
 								</button>
 							</div>
-							<Input name="password" type="password" minlength={6} required placeholder="******" />
+							<Input name="password" type="password" minlength={6} placeholder="******" />
+							{#if errors.password}
+								<p class="form-error">{errors.password}</p>
+							{/if}
 						</div>
-						<Button type="submit" class="my-2 w-full">Login</Button>
+						<Button type="submit" class="my-2 w-full">
+							{#if loading}
+								<Loader />
+							{:else}
+								Login
+							{/if}
+						</Button>
 						{#if form?.message}
-							<Alert.Root variant="default">
+							<Alert.Root variant="destructive">
 								<ExclamationTriangle class="h-4 w-4" />
-								<Alert.Title>Info</Alert.Title>
+								<Alert.Title>Error</Alert.Title>
 								<Alert.Description>{form?.message}.</Alert.Description>
 							</Alert.Root>
 						{/if}
@@ -51,7 +97,7 @@
 				</div>
 				<div class="mt-4 text-center text-sm">
 					Need an account?
-					<a href="/signup" class="underline"> Sign Up </a>
+					<a href="/auth/signup" class="underline"> Sign Up </a>
 				</div>
 			</div>
 		</div>

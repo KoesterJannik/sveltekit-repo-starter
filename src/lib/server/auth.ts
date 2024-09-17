@@ -1,6 +1,5 @@
 import { Lucia } from 'lucia';
 import { dev } from '$app/environment';
-
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
 import { PrismaClient } from '@prisma/client';
 
